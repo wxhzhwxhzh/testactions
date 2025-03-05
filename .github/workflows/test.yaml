@@ -34,7 +34,7 @@ jobs:
 
       # 可选：上传编译后的文件作为构建产物
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-binary
           path: dist/test
