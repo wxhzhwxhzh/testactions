@@ -41,6 +41,6 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add dist/test  # 将编译文件添加到 git 索引
+        git add dist/test.exe  # 将编译文件添加到 git 索引
         git commit -m "Add compiled executable"  # 提交更改
         git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}  # 使用 token 进行身份验证并推送
