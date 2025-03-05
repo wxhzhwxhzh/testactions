@@ -1,40 +1,37 @@
-name: Build Test Script
+name: Build Python Script with PyInstaller
 
-# 触发条件：当 test.py 文件被修改时触发
 on:
   push:
     paths:
-      - 'test.py'
+      - 'test.py'  # 只在 test.py 被修改时触发
+  pull_request:
+    paths:
+      - 'test.py'  # 在提交 PR 时也触发，确保测试最新的改动
 
-# 定义 jobs
 jobs:
   build:
-    # 运行环境：最新版本的 Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 使用 GitHub 提供的 Ubuntu 环境
 
-    # 步骤
     steps:
-      # 检出代码
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # 设置 Python 环境
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9' # 指定 Python 版本
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'  # 设置 Python 版本
 
-      # 安装 PyInstaller
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller  # 安装 pyinstaller
 
-      # 使用 PyInstaller 编译 test.py
-      - name: Build test.py
-        run: pyinstaller --onefile test.py
+    - name: Run PyInstaller to compile test.py
+      run: |
+        pyinstaller --onefile test.py  # 使用 pyinstaller 编译 test.py 脚本
 
-      # 可选：上传编译后的文件作为构建产物
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-binary
-          path: dist/test
+    - name: Upload built executable (optional)
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-executable
+        path: dist/test  # 将编译后的可执行文件上传
