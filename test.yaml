@@ -1,0 +1,40 @@
+name: Build Test Script
+
+# 触发条件：当 test.py 文件被修改时触发
+on:
+  push:
+    paths:
+      - 'test.py'
+
+# 定义 jobs
+jobs:
+  build:
+    # 运行环境：最新版本的 Ubuntu
+    runs-on: ubuntu-latest
+
+    # 步骤
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 设置 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # 指定 Python 版本
+
+      # 安装 PyInstaller
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      # 使用 PyInstaller 编译 test.py
+      - name: Build test.py
+        run: pyinstaller --onefile test.py
+
+      # 可选：上传编译后的文件作为构建产物
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-binary
+          path: dist/test
