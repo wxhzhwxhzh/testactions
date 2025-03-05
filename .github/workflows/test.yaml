@@ -35,3 +35,10 @@ jobs:
       with:
         name: test-executable
         path: dist/test  # 将编译后的可执行文件上传
+    - name: Commit and push compiled file to GitHub
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add dist/test  # 将编译文件添加到 git 索引
+        git commit -m "Add compiled executable"  # 提交更改
+        git push origin main  # 将文件推送到远程仓库
